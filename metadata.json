@@ -1,0 +1,136 @@
+{
+  "_meta": {
+    "description": "Central Metadata Registry for Astrikos pipeline blocks (nexus_blocks.py)",
+    "version": "1.0.0",
+    "module": "nexus_blocks"
+  },
+
+  "blocks": {
+
+    "load_csv": {
+      "display_name": "Load CSV",
+      "description": "Load a CSV file from disk and return it as a pandas DataFrame.",
+      "category": "data_ingestion",
+      "function_name": "load_csv",
+
+      "inputs": {
+        "filepath": {
+          "type": "string",
+          "description": "Absolute or relative path to the CSV file.",
+          "required": true
+        }
+      },
+
+      "outputs": {
+        "df": {
+          "type": "pd.DataFrame",
+          "description": "The loaded tabular data."
+        }
+      },
+
+      "parameters": {},
+
+      "constraints": {
+        "valid_previous_blocks": [],
+        "valid_next_blocks": ["impute_missing_values"],
+        "preconditions": [
+          "File must exist at the given filepath",
+          "File must be a valid CSV with a 'timestamp' column"
+        ]
+      },
+
+      "example_usage": "df = load_csv('data/dummy_electricity_data.csv')"
+    },
+
+    "impute_missing_values": {
+      "display_name": "Impute Missing Values",
+      "description": "Fill NaN values in all numeric columns using a configurable imputation strategy.",
+      "category": "data_preprocessing",
+      "function_name": "impute_missing_values",
+
+      "inputs": {
+        "df": {
+          "type": "pd.DataFrame",
+          "description": "Input DataFrame that may contain NaN values in numeric columns.",
+          "required": true
+        }
+      },
+
+      "outputs": {
+        "df": {
+          "type": "pd.DataFrame",
+          "description": "DataFrame with all numeric NaNs filled."
+        }
+      },
+
+      "parameters": {
+        "strategy": {
+          "type": "string",
+          "default": "mean",
+          "allowed_values": ["mean", "median", "most_frequent", "constant"],
+          "description": "The imputation strategy used by sklearn.impute.SimpleImputer.",
+          "required": false
+        }
+      },
+
+      "constraints": {
+        "valid_previous_blocks": ["load_csv"],
+        "valid_next_blocks": ["train_random_forest"],
+        "preconditions": [
+          "Input DataFrame must contain at least one numeric column"
+        ]
+      },
+
+      "example_usage": "df_clean = impute_missing_values(df, strategy='mean')"
+    },
+
+    "train_random_forest": {
+      "display_name": "Train Random Forest",
+      "description": "Train a RandomForestRegressor on all numeric features, predicting the specified target column.",
+      "category": "model_building",
+      "function_name": "train_random_forest",
+
+      "inputs": {
+        "df": {
+          "type": "pd.DataFrame",
+          "description": "Clean DataFrame with no NaNs in numeric columns.",
+          "required": true
+        },
+        "target_col": {
+          "type": "string",
+          "description": "Name of the column to predict.",
+          "required": true
+        }
+      },
+
+      "outputs": {
+        "model": {
+          "type": "sklearn.ensemble.RandomForestRegressor",
+          "description": "The fitted RandomForest model object."
+        }
+      },
+
+      "parameters": {
+        "target_col": {
+          "type": "string",
+          "description": "The target column name for regression.",
+          "required": true,
+          "default": null,
+          "allowed_values": null
+        }
+      },
+
+      "constraints": {
+        "valid_previous_blocks": ["impute_missing_values"],
+        "valid_next_blocks": [],
+        "preconditions": [
+          "DataFrame must have no NaN values in numeric columns",
+          "target_col must exist in the DataFrame",
+          "DataFrame must contain at least one numeric feature column besides the target"
+        ]
+      },
+
+      "example_usage": "model = train_random_forest(df_clean, target_col='kilowatt_hours')"
+    }
+  }
+}
