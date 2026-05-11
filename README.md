@@ -19,17 +19,20 @@ An AI-powered ML workflow platform that converts natural language prompts into e
 
 ## 🖼️ Screenshots
 
+### System Architecture
+![System Architecture](https://github.com/Nikhilm194/Nexus-AI-LLM-Powered-ML-Workflow-Orchestration-Platform/blob/master/System%20Architecture.png?raw=true)
+
 ### Dashboard
-![Dashboard](images/dashboard.png)
+![Dashboard](https://github.com/Nikhilm194/Nexus-AI-LLM-Powered-ML-Workflow-Orchestration-Platform/blob/master/Overview%20image.png?raw=true)
 
 ### AI Assistant
-![Assistant](images/assistant.png)
+![Assistant](https://github.com/Nikhilm194/Nexus-AI-LLM-Powered-ML-Workflow-Orchestration-Platform/blob/master/Chatbot%20Image.png?raw=true)
 
 ### Generated Pipeline
-![Pipeline](images/pipeline.png)
+![Pipeline](https://github.com/Nikhilm194/Nexus-AI-LLM-Powered-ML-Workflow-Orchestration-Platform/blob/master/Pipeline%20image.png?raw=true)
 
 ### Execution Results
-![Execution](images/execution.png)
+![Execution](https://github.com/Nikhilm194/Nexus-AI-LLM-Powered-ML-Workflow-Orchestration-Platform/blob/master/Output%20result.png?raw=true)
 
 ---
 
